@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    # Переменные окружения, которые будут установлены в контейнере
+    container_name: articles_db
+    environment:
+      POSTGRES_USER: alexbek
+      POSTGRES_PASSWORD: alexbek228
+      POSTGRES_DB: articles
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
