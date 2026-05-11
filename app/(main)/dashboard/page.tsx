@@ -22,7 +22,9 @@ export default async function DashboardPage() {
             Welcome back! Here&apos;s your account overview.
           </p>
         </div>
-        {!user.emailVerified && <EmailVerificationAlert />}
+        {!user.emailVerified && user.email && (
+          <EmailVerificationAlert email={user.email} />
+        )}
         <ProfileInformation user={user} />
       </div>
     </main>

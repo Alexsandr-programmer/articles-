@@ -41,7 +41,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
     <DropdownMenu>
       {/* button to open the dropdown */}
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="cursor-pointer">
           {user.image ? (
             <Image
               src={user.image}
@@ -67,14 +67,14 @@ export function UserDropdown({ user }: UserDropdownProps) {
 
         {/* profile link */}
         <DropdownMenuItem asChild>
-          <Link href="/profile">
+          <Link href="/profile" className="cursor-pointer">
             <UserIcon className="size-4" /> <span>Profile</span>
           </Link>
         </DropdownMenuItem>
 
         {/* dashboard link */}
         <DropdownMenuItem asChild>
-          <Link href="/dashboard">
+          <Link href="/dashboard" className="cursor-pointer">
             <LayoutDashboardIcon className="size-4" /> <span>Dashboard</span>
           </Link>
         </DropdownMenuItem>
@@ -82,7 +82,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
         {/* admin link */}
         {user.role === "admin" && (
           <DropdownMenuItem asChild>
-            <Link href="/admin">
+            <Link href="/admin" className="cursor-pointer">
               <ShieldIcon className="size-4" /> <span>Admin</span>
             </Link>
           </DropdownMenuItem>

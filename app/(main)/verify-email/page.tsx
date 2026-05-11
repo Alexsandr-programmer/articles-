@@ -1,3 +1,4 @@
+import ResendVerificationButton from "@/components/shared/auth/resend-verification-btn";
 import { getServerSession } from "@/lib/auth/get-session";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -22,6 +23,8 @@ export default async function VerifyEmailPage() {
         </div>
         {/* <ResendVerificationButton email={user.email} /> */}
         {/* TODO: Add resend verification button */}
+
+        <ResendVerificationButton email={user.email} />
       </div>
     </main>
   );

@@ -6,6 +6,7 @@ import { ModeToggle } from "../../ui/theme-toggle";
 import { UserDropdown } from "./user-dropdown";
 import { buttonVariants } from "../../ui/button";
 import { getServerSession } from "@/lib/auth/get-session";
+import { cn } from "@/lib/utils";
 
 export async function Navbar() {
   // TODO: Display logged-in user
@@ -47,13 +48,19 @@ export async function Navbar() {
             <div className="flex items-center gap-x-1">
               <Link
                 href="/login"
-                className={buttonVariants({ variant: "default" })}
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "cursor-pointer",
+                )}
               >
                 Login
               </Link>
               <Link
                 href="/sign-up"
-                className={buttonVariants({ variant: "default" })}
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "cursor-pointer",
+                )}
               >
                 Sign Up
               </Link>

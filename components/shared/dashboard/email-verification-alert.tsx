@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { MailIcon } from "lucide-react";
+import ResendVerificationButton from "../auth/resend-verification-btn";
 
-export default function EmailVerificationAlert() {
+export default function EmailVerificationAlert({ email }: { email: string }) {
   return (
     <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800/50 dark:bg-yellow-950/30">
       <div className="flex items-center justify-between gap-x-4">
@@ -12,9 +11,8 @@ export default function EmailVerificationAlert() {
             Please verify your email address to access all features.
           </span>
         </div>
-        <Button size="sm" asChild>
-          <Link href="/verify-email">Verify Email</Link>
-        </Button>
+
+        <ResendVerificationButton email={email} />
       </div>
     </div>
   );
