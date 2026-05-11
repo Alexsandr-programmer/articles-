@@ -1,14 +1,16 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "@/lib/prisma";
+import { admin } from "better-auth/plugins";
+import { EmailTemplate } from "../../components/shared/auth/email-template";
+import prisma from "../prisma";
 import { sendEmail } from "./send-email";
-import { EmailTemplate } from "@/components/shared/auth/email-template";
 import { createElement } from "react";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  plugins: [admin()],
   emailAndPassword: {
     enabled: true,
   },
