@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { UserAvatar } from "@/components/shared/header/user-avatar";
+import { UserAvatar } from "@/components/shared/dashboard/user-avatar";
 import { UserIcon, ShieldIcon, CalendarDaysIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";

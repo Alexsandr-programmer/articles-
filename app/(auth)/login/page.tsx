@@ -8,10 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function LoginPage() {
-  const session = await getServerSession();
-  const user = session?.user;
-  if (user) redirect("/");
-
   return (
     <main className="flex min-h-svh items-center justify-center px-4">
       <LoginForm />

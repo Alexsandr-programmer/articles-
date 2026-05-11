@@ -55,14 +55,21 @@ export function LoginForm() {
         message: error.message || "Error signing in",
       });
       toast.error(error.message || "Error signing in");
-    } else {
-      toast.success("Signed in successfully");
-      router.push("/");
-      router.refresh();
     }
   }
 
-  async function handleSocialSignIn(provider: "google" | "github") {}
+  async function handleSocialSignIn(provider: "google" | "github") {
+    const { error } = await authClient.signIn.social({
+      provider,
+      callbackURL: "/dashboard",
+    });
+    if (error) {
+      form.setError("root.serverError", {
+        message: error.message || "Error signing in",
+      });
+      toast.error(error.message || "Error signing in");
+    }
+  }
 
   return (
     <Card className="w-full max-w-md">
@@ -153,7 +160,7 @@ export function LoginForm() {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full gap-2"
+                className="w-full gap-2 cursor-pointer"
                 disabled={form.formState.isSubmitting}
                 onClick={() => handleSocialSignIn("google")}
               >
@@ -164,7 +171,7 @@ export function LoginForm() {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full gap-2"
+                className="w-full gap-2 cursor-pointer"
                 disabled={form.formState.isSubmitting}
                 onClick={() => handleSocialSignIn("github")}
               >

@@ -1,6 +1,10 @@
+import { getServerSession } from "@/lib/auth/get-session";
 import type { Metadata } from "next";
 import { redirect, unauthorized } from "next/navigation";
-import { getServerSession } from "@/lib/auth/get-session";
+import { EmailForm } from "@/components/shared/profiIe/email-form";
+import { LogoutEverywhereButton } from "@/components/shared/profiIe/logout-everythere-btn";
+import { PasswordForm } from "@/components/shared/profiIe/password-form";
+import { ProfileDetailsForm } from "@/components/shared/profiIe/profile-details-form";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -9,7 +13,8 @@ export const metadata: Metadata = {
 export default async function ProfilePage() {
   const session = await getServerSession();
   const user = session?.user;
-  if (!user) redirect("/unauthorized");
+
+  if (!user) return redirect("/unauthorized");
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-12">
@@ -22,15 +27,12 @@ export default async function ProfilePage() {
         </div>
         <div className="flex flex-col gap-6 lg:flex-row">
           <div className="flex-1">
-            {/* <ProfileDetailsForm user={user} /> */}
-            {/* TODO: Add profile details form */}
+            <ProfileDetailsForm user={user} />
           </div>
           <div className="flex-1 space-y-6">
-            {/* <EmailForm currentEmail={user.email} />
-                <PasswordForm />
-                <LogoutEverywhereButton /> */}
-
-            {/* TODO: Add email form, password form, and logout everywhere button */}
+            <EmailForm currentEmail={user.email} />
+            <PasswordForm />
+            <LogoutEverywhereButton />
           </div>
         </div>
       </div>
