@@ -21,20 +21,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { signUpSchema } from "@/lib/auth/auth-schemas";
+import { authClient } from "@/lib/auth/auth-client";
 
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 export function SignUpForm() {
-  const [error, setError] = useState<string | null>(null);
-
-  const router = useRouter();
-
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -45,9 +41,23 @@ export function SignUpForm() {
     },
   });
 
-  async function onSubmit() {}
-
-  const loading = form.formState.isSubmitting;
+  async function onSubmit({ name, email, password }: SignUpValues) {
+    const { error } = await authClient.signUp.email({
+      name,
+      email,
+      password,
+      callbackURL: "/email-verifed",
+    });
+    if (error) {
+      form.setError("root.serverError", {
+        message: error.message || "Error signing up",
+      });
+      toast.error(error.message || "Error signing up");
+    } else {
+      toast.success("Email sent to your email address");
+      redirect("/verify-email");
+    }
+  }
 
   return (
     <Card className="w-full max-w-md">
@@ -128,13 +138,17 @@ export function SignUpForm() {
               )}
             />
 
-            {error && (
+            {form.formState.errors.root?.message && (
               <div role="alert" className="text-sm text-red-600">
-                {error}
+                {form.formState.errors.root?.message}
               </div>
             )}
 
-            <LoadingButton type="submit" className="w-full" loading={loading}>
+            <LoadingButton
+              type="submit"
+              className="w-full"
+              loading={form.formState.isSubmitting}
+            >
               Create an account
             </LoadingButton>
           </form>
