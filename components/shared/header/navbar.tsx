@@ -5,11 +5,13 @@ import Link from "next/link";
 import { ModeToggle } from "../../ui/theme-toggle";
 import { UserDropdown } from "./user-dropdown";
 import { buttonVariants } from "../../ui/button";
+import { getServerSession } from "@/lib/auth/get-session";
 
-export function Navbar() {
+export async function Navbar() {
   // TODO: Display logged-in user
 
-  const userAuth = false;
+  const session = await getServerSession();
+  const user = session?.user;
 
   return (
     <header className="bg-background border-b w-full">
@@ -39,8 +41,8 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-x-10 justify-end">
-          {userAuth ? (
-            <UserDropdown />
+          {user ? (
+            <UserDropdown user={user} />
           ) : (
             <div className="flex items-center gap-x-1">
               <Link

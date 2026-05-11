@@ -18,18 +18,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
+import type { User } from "@/lib/auth/auth";
+import { authClient } from "@/lib/auth/auth-client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-function handleSignOut() {
-  // TODO: Handle sign out
+interface UserDropdownProps {
+  user: User;
 }
 
-export function UserDropdown() {
-  // TODO: Render real user info
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    image: undefined,
-    role: "admin",
+export function UserDropdown({ user }: UserDropdownProps) {
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    const { error } = await authClient.signOut();
+    if (error) toast.error(error.message || "Error signing out");
+    else toast.success("Signed out successfully");
+    router.refresh();
   };
 
   return (
@@ -75,12 +80,13 @@ export function UserDropdown() {
         </DropdownMenuItem>
 
         {/* admin link */}
-        {/* TODO: Hide admin item for non-admin users */}
-        <DropdownMenuItem asChild>
-          <Link href="/admin">
-            <ShieldIcon className="size-4" /> <span>Admin</span>
-          </Link>
-        </DropdownMenuItem>
+        {user.role === "admin" && (
+          <DropdownMenuItem asChild>
+            <Link href="/admin">
+              <ShieldIcon className="size-4" /> <span>Admin</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
 
         {/* sign out link */}
         <DropdownMenuItem onClick={handleSignOut}>

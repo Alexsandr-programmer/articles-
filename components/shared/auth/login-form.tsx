@@ -29,13 +29,12 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
+import { toast } from "sonner";
+import { authClient } from "@/lib/auth/auth-client";
 
 type LoginValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -45,7 +44,21 @@ export function LoginForm() {
     },
   });
 
-  async function onSubmit() {}
+  async function onSubmit({ email, password, rememberMe }: LoginValues) {
+    const { error } = await authClient.signIn.email({
+      email,
+      password,
+      callbackURL: "/",
+    });
+    if (error) {
+      form.setError("root.serverError", {
+        message: error.message || "Error signing in",
+      });
+      toast.error(error.message || "Error signing in");
+    } else {
+      toast.success("Signed in successfully");
+    }
+  }
 
   async function handleSocialSignIn(provider: "google" | "github") {}
 
@@ -120,13 +133,17 @@ export function LoginForm() {
               )}
             />
 
-            {error && (
+            {form.formState.errors.root?.serverError && (
               <div role="alert" className="text-sm text-red-600">
-                {error}
+                {form.formState.errors.root?.serverError.message}
               </div>
             )}
 
-            <LoadingButton type="submit" className="w-full" loading={loading}>
+            <LoadingButton
+              type="submit"
+              className="w-full"
+              loading={form.formState.isSubmitting}
+            >
               Login
             </LoadingButton>
 
@@ -135,7 +152,7 @@ export function LoginForm() {
                 type="button"
                 variant="outline"
                 className="w-full gap-2"
-                disabled={loading}
+                disabled={form.formState.isSubmitting}
                 onClick={() => handleSocialSignIn("google")}
               >
                 <GoogleIcon width="0.98em" height="1em" />
@@ -146,7 +163,7 @@ export function LoginForm() {
                 type="button"
                 variant="outline"
                 className="w-full gap-2"
-                disabled={loading}
+                disabled={form.formState.isSubmitting}
                 onClick={() => handleSocialSignIn("github")}
               >
                 <GitHubIcon />

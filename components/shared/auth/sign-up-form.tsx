@@ -138,9 +138,9 @@ export function SignUpForm() {
               )}
             />
 
-            {form.formState.errors.root?.message && (
+            {form.formState.errors.root?.serverError && (
               <div role="alert" className="text-sm text-red-600">
-                {form.formState.errors.root?.message}
+                {form.formState.errors.root?.serverError.message}
               </div>
             )}
 
