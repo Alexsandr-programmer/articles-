@@ -5,26 +5,28 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Email Verified",
+  title: "Forbidden",
 };
 
-export default async function EmailVerifiedPage() {
+export default async function ForbiddenPage() {
   const session = await getServerSession();
   const user = session?.user;
   if (!user) redirect("/unauthorized");
 
   return (
-    <main className="flex flex-1 items-center justify-center px-4 text-center">
+    <main className="flex w-full grow items-center justify-center px-4 text-center">
       <div className="space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Email verified</h1>
+          <h1 className="text-2xl font-semibold">403 - Forbidden</h1>
           <p className="text-muted-foreground">
-            Your email has been verified successfully.
+            You don&apos;t have access to this page.
           </p>
         </div>
-        <Button asChild>
-          <Link href="/dashboard">Go to dashboard</Link>
-        </Button>
+        <div>
+          <Button asChild>
+            <Link href="/dashboard">Go to Dashboard</Link>
+          </Button>
+        </div>
       </div>
     </main>
   );

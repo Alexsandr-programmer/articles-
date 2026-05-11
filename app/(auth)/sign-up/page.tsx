@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import { SignUpForm } from "@/components/shared/auth/sign-up-form";
+import { getServerSession } from "@/lib/auth/get-session";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Sign up",
+  title: "Create an account",
 };
 
-export default function SignUp() {
+export default async function SignUpPage() {
+  const session = await getServerSession();
+  const user = session?.user;
+  if (user) redirect("/");
+
   return (
     <main className="flex min-h-svh items-center justify-center px-4">
       <SignUpForm />

@@ -6,9 +6,11 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-dvh flex-col">
       <Navbar />
-      <main className="mx-auto px-4 py-8 md:px-6 md:py-12">{children}</main>
+      <main className="mx-auto flex w-full grow px-4 py-8 md:px-6 md:py-12">
+        {children}
+      </main>
     </div>
   );
 }

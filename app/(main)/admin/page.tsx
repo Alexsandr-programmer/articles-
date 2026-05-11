@@ -1,11 +1,18 @@
+import { getServerSession } from "@/lib/auth/get-session";
 import type { Metadata } from "next";
-import { forbidden, unauthorized } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Admin",
 };
 
 export default async function AdminPage() {
+  const session = await getServerSession();
+  const user = session?.user;
+
+  if (!user) redirect("/unauthorized");
+  if (user.role !== "admin") redirect("/forbidden");
+
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-12">
       <div className="space-y-6">

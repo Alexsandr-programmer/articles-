@@ -3,25 +3,23 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Verify Email",
+  title: "Unauthorized",
 };
 
-export default async function VerifyEmailPage() {
+export default async function UnauthorizedPage() {
   const session = await getServerSession();
   const user = session?.user;
-  if (!user) redirect("/unauthorized");
+  if (user) redirect("/dashboard");
 
   return (
-    <main className="flex flex-1 items-center justify-center px-4 text-center">
+    <main className="flex w-full grow items-center justify-center px-4 text-center">
       <div className="space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Verify your email</h1>
+          <h1 className="text-2xl font-semibold">401 - Unauthorized</h1>
           <p className="text-muted-foreground">
-            A verification email was sent to your inbox.
+            Please log in to your account to continue.
           </p>
         </div>
-        {/* <ResendVerificationButton email={user.email} /> */}
-        {/* TODO: Add resend verification button */}
       </div>
     </main>
   );

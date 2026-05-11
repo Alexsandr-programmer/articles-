@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -31,6 +31,7 @@ import { authClient } from "@/lib/auth/auth-client";
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 export function SignUpForm() {
+  const router = useRouter();
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -46,7 +47,7 @@ export function SignUpForm() {
       name,
       email,
       password,
-      callbackURL: "/email-verifed",
+      callbackURL: "/email-verified",
     });
     if (error) {
       form.setError("root.serverError", {
@@ -55,7 +56,7 @@ export function SignUpForm() {
       toast.error(error.message || "Error signing up");
     } else {
       toast.success("Email sent to your email address");
-      redirect("/verify-email");
+      router.push("/verify-email");
     }
   }
 

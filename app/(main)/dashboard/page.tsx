@@ -1,34 +1,17 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { UserAvatar } from "@/components/shared/header/user-avatar";
-import { CalendarDaysIcon, MailIcon, ShieldIcon, UserIcon } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
-import { unauthorized } from "next/navigation";
-import { format } from "date-fns";
+import { redirect, unauthorized } from "next/navigation";
+import { getServerSession } from "@/lib/auth/get-session";
+import EmailVerificationAlert from "../../../components/shared/dashboard/email-verification-alert";
+import { ProfileInformation } from "@/components/shared/dashboard/profile-information";
 
 export const metadata: Metadata = {
   title: "Dashboard",
 };
 
 export default async function DashboardPage() {
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    image: undefined,
-    role: "admin",
-    createdAt: new Date(),
-    emailVerified: false,
-  };
-
-  if (!user) unauthorized();
+  const session = await getServerSession();
+  const user = session?.user;
+  if (!user) redirect("/unauthorized");
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-12">
@@ -43,84 +26,5 @@ export default async function DashboardPage() {
         <ProfileInformation user={user} />
       </div>
     </main>
-  );
-}
-
-interface ProfileInformationProps {
-  user: {
-    name: string;
-    email: string;
-    image: string | null | undefined;
-    role: string;
-    createdAt: Date;
-    emailVerified: boolean;
-  };
-}
-
-function ProfileInformation({ user }: ProfileInformationProps) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <UserIcon className="size-5" />
-          Profile Information
-        </CardTitle>
-        <CardDescription>
-          Your account details and current status
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-          <div className="flex flex-col items-center gap-3">
-            <UserAvatar
-              name={user.name}
-              image={user.image}
-              className="size-32 sm:size-24"
-            />
-            {user.role && (
-              <Badge>
-                <ShieldIcon className="size-3" />
-                {user.role}
-              </Badge>
-            )}
-          </div>
-
-          <div className="flex-1 space-y-4">
-            <div>
-              <h3 className="text-2xl font-semibold">{user.name}</h3>
-              <p className="text-muted-foreground">{user.email}</p>
-            </div>
-
-            <div className="space-y-2">
-              <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                <CalendarDaysIcon className="size-4" />
-                Member Since
-              </div>
-              <p className="font-medium">
-                {format(user.createdAt, "MMMM d, yyyy")}
-              </p>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function EmailVerificationAlert() {
-  return (
-    <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800/50 dark:bg-yellow-950/30">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <MailIcon className="size-5 text-yellow-600 dark:text-yellow-400" />
-          <span className="text-yellow-800 dark:text-yellow-200">
-            Please verify your email address to access all features.
-          </span>
-        </div>
-        <Button size="sm" asChild>
-          <Link href="/verify-email">Verify Email</Link>
-        </Button>
-      </div>
-    </div>
   );
 }

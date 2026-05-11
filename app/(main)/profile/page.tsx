@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { unauthorized } from "next/navigation";
+import { redirect, unauthorized } from "next/navigation";
+import { getServerSession } from "@/lib/auth/get-session";
 
 export const metadata: Metadata = {
   title: "Profile",
 };
 
 export default async function ProfilePage() {
+  const session = await getServerSession();
+  const user = session?.user;
+  if (!user) redirect("/unauthorized");
+
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-12">
       <div className="space-y-6">

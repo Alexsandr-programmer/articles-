@@ -26,15 +26,16 @@ import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/lib/auth/auth-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth/auth-client";
 
 type LoginValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
+  const router = useRouter();
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -44,11 +45,10 @@ export function LoginForm() {
     },
   });
 
-  async function onSubmit({ email, password, rememberMe }: LoginValues) {
+  async function onSubmit({ email, password }: LoginValues) {
     const { error } = await authClient.signIn.email({
       email,
       password,
-      callbackURL: "/",
     });
     if (error) {
       form.setError("root.serverError", {
@@ -57,6 +57,8 @@ export function LoginForm() {
       toast.error(error.message || "Error signing in");
     } else {
       toast.success("Signed in successfully");
+      router.push("/");
+      router.refresh();
     }
   }
 
