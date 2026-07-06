@@ -1,14 +1,14 @@
 export default function About() {
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-12">
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">About</h1>
-          <p className="text-muted-foreground">
-            Learn more about the platform and its features.
-          </p>
-        </div>
+    <div className="w-full space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+          About
+        </h1>
+        <p className="text-muted-foreground max-w-prose text-pretty text-sm sm:text-base">
+          Learn more about the platform and its features.
+        </p>
       </div>
-    </main>
+    </div>
   );
 }

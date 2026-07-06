@@ -14,20 +14,20 @@ export default async function ForbiddenPage() {
   if (!user) redirect("/unauthorized");
 
   return (
-    <main className="flex w-full grow items-center justify-center px-4 text-center">
-      <div className="space-y-6">
+    <div className="flex min-h-[min(60vh,28rem)] w-full grow flex-col items-center justify-center px-3 py-10 text-center sm:px-4">
+      <div className="mx-auto w-full max-w-md space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">403 - Forbidden</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+            403 — Forbidden
+          </h1>
+          <p className="text-muted-foreground text-pretty text-sm sm:text-base">
             You don&apos;t have access to this page.
           </p>
         </div>
-        <div>
-          <Button asChild>
-            <Link href="/dashboard">Go to Dashboard</Link>
-          </Button>
-        </div>
+        <Button asChild className="w-full sm:w-auto">
+          <Link href="/dashboard">Go to Dashboard</Link>
+        </Button>
       </div>
-    </main>
+    </div>
   );
 }

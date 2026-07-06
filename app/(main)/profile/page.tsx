@@ -17,25 +17,25 @@ export default async function ProfilePage() {
   if (!user) return redirect("/unauthorized");
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-12">
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Profile</h1>
-          <p className="text-muted-foreground">
-            Update your account details, email, and password.
-          </p>
+    <div className="w-full space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+          Profile
+        </h1>
+        <p className="text-muted-foreground max-w-prose text-pretty text-sm sm:text-base">
+          Update your account details, email, and password.
+        </p>
+      </div>
+      <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:gap-8">
+        <div className="min-w-0 flex-1">
+          <ProfileDetailsForm user={user} />
         </div>
-        <div className="flex flex-col gap-6 lg:flex-row">
-          <div className="flex-1">
-            <ProfileDetailsForm user={user} />
-          </div>
-          <div className="flex-1 space-y-6">
-            <EmailForm currentEmail={user.email} />
-            <PasswordForm />
-            <LogoutEverywhereButton />
-          </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-6">
+          <EmailForm currentEmail={user.email} />
+          <PasswordForm />
+          <LogoutEverywhereButton />
         </div>
       </div>
-    </main>
+    </div>
   );
 }

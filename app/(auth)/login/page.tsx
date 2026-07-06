@@ -9,8 +9,10 @@ export const metadata: Metadata = {
 
 export default async function LoginPage() {
   return (
-    <main className="flex min-h-svh items-center justify-center px-4">
-      <LoginForm />
+    <main className="flex min-h-[100dvh] w-full min-w-0 items-center justify-center px-4 py-8 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-12">
+      <div className="w-full max-w-md">
+        <LoginForm />
+      </div>
     </main>
   );
 }

@@ -14,18 +14,20 @@ export default async function EmailVerifiedPage() {
   if (!user) redirect("/unauthorized");
 
   return (
-    <main className="flex flex-1 items-center justify-center px-4 text-center">
-      <div className="space-y-6">
+    <div className="flex min-h-[min(70vh,32rem)] w-full flex-1 flex-col items-center justify-center px-2 py-8 text-center sm:min-h-[50vh] sm:px-4">
+      <div className="mx-auto w-full max-w-md space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Email verified</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+            Email verified
+          </h1>
+          <p className="text-muted-foreground text-pretty text-sm sm:text-base">
             Your email has been verified successfully.
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link href="/dashboard">Go to dashboard</Link>
         </Button>
       </div>
-    </main>
+    </div>
   );
 }

@@ -1,56 +1,62 @@
-import codingInFlowLogo from "@/assets/coding_in_flow_logo.jpg";
-
-import Image from "next/image";
 import Link from "next/link";
 import { ModeToggle } from "../../ui/theme-toggle";
 import { UserDropdown } from "./user-dropdown";
+import { MobileNav } from "./mobile-nav";
 import { buttonVariants } from "../../ui/button";
 import { getServerSession } from "@/lib/auth/get-session";
 import { cn } from "@/lib/utils";
 
 export async function Navbar() {
-  // TODO: Display logged-in user
-
   const session = await getServerSession();
   const user = session?.user;
 
   return (
-    <header className="bg-background border-b w-full">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="text-4xl font-bold">
+    <header className="bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 w-full min-w-0 border-b backdrop-blur">
+      <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-5">
+        <Link
+          href="/"
+          className="shrink-0 text-xl font-bold tracking-tight sm:text-2xl md:text-3xl lg:text-4xl"
+        >
           Alex<span className="text-primary font-bold">Bek</span>
         </Link>
 
-        <div className="flex items-center justify-between w-1/2">
-          <nav className="flex items-center gap-2 ">
-            <Link href="/" className={buttonVariants({ variant: "ghost" })}>
+        <nav
+          className="absolute left-1/2 hidden -translate-x-1/2 md:flex"
+          aria-label="Main"
+        >
+          <div className="flex items-center gap-1 lg:gap-2">
+            <Link
+              href="/"
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
+            >
               Home
             </Link>
             <Link
               href="/about"
-              className={buttonVariants({ variant: "ghost" })}
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className={buttonVariants({ variant: "ghost" })}
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
             >
               Contact
             </Link>
-          </nav>
-        </div>
+          </div>
+        </nav>
 
-        <div className="flex items-center gap-x-10 justify-end">
+        <div className="flex min-w-0 shrink-0 items-center justify-end gap-2 sm:gap-3">
+          <MobileNav />
           {user ? (
             <UserDropdown user={user} />
           ) : (
-            <div className="flex items-center gap-x-1">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <Link
                 href="/login"
                 className={cn(
-                  buttonVariants({ variant: "default" }),
-                  "cursor-pointer",
+                  buttonVariants({ variant: "default", size: "sm" }),
+                  "cursor-pointer sm:text-sm",
                 )}
               >
                 Login
@@ -58,8 +64,8 @@ export async function Navbar() {
               <Link
                 href="/sign-up"
                 className={cn(
-                  buttonVariants({ variant: "default" }),
-                  "cursor-pointer",
+                  buttonVariants({ variant: "default", size: "sm" }),
+                  "cursor-pointer sm:text-sm",
                 )}
               >
                 Sign Up

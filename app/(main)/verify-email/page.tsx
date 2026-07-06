@@ -13,19 +13,18 @@ export default async function VerifyEmailPage() {
   if (!user) redirect("/unauthorized");
 
   return (
-    <main className="flex flex-1 items-center justify-center px-4 text-center">
-      <div className="space-y-6">
+    <div className="flex min-h-[min(70vh,32rem)] w-full flex-1 flex-col items-center justify-center px-2 py-8 text-center sm:min-h-[50vh] sm:px-4">
+      <div className="mx-auto w-full max-w-md space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Verify your email</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+            Verify your email
+          </h1>
+          <p className="text-muted-foreground text-pretty text-sm sm:text-base">
             A verification email was sent to your inbox.
           </p>
         </div>
-        {/* <ResendVerificationButton email={user.email} /> */}
-        {/* TODO: Add resend verification button */}
-
         <ResendVerificationButton email={user.email} />
       </div>
-    </main>
+    </div>
   );
 }
