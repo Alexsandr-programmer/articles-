@@ -8,6 +8,26 @@ datasource db {
   provider = "postgresql"
 }
 
+model Article {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text 
+  published Boolean  @default(false)
+  
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+
+
+
+  @@index([authorId]) 
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String
@@ -22,6 +42,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  articles      Article[]
 
   @@unique([email])
   @@map("user")

@@ -32,6 +32,12 @@ export async function Navbar() {
               Home
             </Link>
             <Link
+              href="/create-article"
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
+            >
+              Create
+            </Link>
+            <Link
               href="/about"
               className={buttonVariants({ variant: "ghost", size: "sm" })}
             >
@@ -64,7 +70,7 @@ export async function Navbar() {
               <Link
                 href="/sign-up"
                 className={cn(
-                  buttonVariants({ variant: "default", size: "sm" }),
+                  buttonVariants({ variant: "secondary", size: "sm" }),
                   "cursor-pointer sm:text-sm",
                 )}
               >
