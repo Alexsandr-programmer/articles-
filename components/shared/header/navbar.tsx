@@ -1,15 +1,12 @@
 import Link from "next/link";
 import { ModeToggle } from "../../ui/theme-toggle";
-import { UserDropdown } from "./user-dropdown";
 import { MobileNav } from "./mobile-nav";
 import { buttonVariants } from "../../ui/button";
-import { getServerSession } from "@/lib/auth/get-session";
-import { cn } from "@/lib/utils";
+import AuthNavbar from "./auth-navbar";
+import { Suspense } from "react";
+import { Divide } from "lucide-react";
 
 export async function Navbar() {
-  const session = await getServerSession();
-  const user = session?.user;
-
   return (
     <header className="bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 w-full min-w-0 border-b backdrop-blur">
       <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-5">
@@ -54,30 +51,15 @@ export async function Navbar() {
 
         <div className="flex min-w-0 shrink-0 items-center justify-end gap-2 sm:gap-3">
           <MobileNav />
-          {user ? (
-            <UserDropdown user={user} />
-          ) : (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <Link
-                href="/login"
-                className={cn(
-                  buttonVariants({ variant: "default", size: "sm" }),
-                  "cursor-pointer sm:text-sm",
-                )}
-              >
-                Login
-              </Link>
-              <Link
-                href="/sign-up"
-                className={cn(
-                  buttonVariants({ variant: "secondary", size: "sm" }),
-                  "cursor-pointer sm:text-sm",
-                )}
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
+          <Suspense
+            fallback={
+              <div className="flex h-8 w-full items-center justify-center">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-600" />
+              </div>
+            }
+          >
+            <AuthNavbar></AuthNavbar>
+          </Suspense>
           <ModeToggle />
         </div>
       </div>
