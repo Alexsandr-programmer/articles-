@@ -44,6 +44,7 @@ export default function RootLayout({
         "font-sans",
         inter.variable,
       )}
+      data-scroll-behavior="smooth"
     >
       <body className="flex min-h-dvh min-w-0 grow flex-col antialiased">
         <ThemeProvider

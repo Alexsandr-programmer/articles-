@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Create an account",
+  description: "Create an account",
 };
 
 export default async function SignUpPage() {

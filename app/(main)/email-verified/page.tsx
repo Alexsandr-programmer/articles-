@@ -6,6 +6,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Email Verified",
+  description: "Your email has been verified successfully",
 };
 
 export default async function EmailVerifiedPage() {

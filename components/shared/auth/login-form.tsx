@@ -55,6 +55,10 @@ export function LoginForm() {
         message: error.message || "Error signing in",
       });
       toast.error(error.message || "Error signing in");
+    } else {
+      toast.success("Success");
+      form.reset();
+      router.push("/");
     }
   }
 

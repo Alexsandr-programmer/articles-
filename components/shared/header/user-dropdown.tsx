@@ -41,19 +41,24 @@ export function UserDropdown({ user }: UserDropdownProps) {
     <DropdownMenu>
       {/* button to open the dropdown */}
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="max-w-[min(100%,14rem)] cursor-pointer sm:max-w-none">
+        <Button
+          variant="outline"
+          className="max-w-[min(100%,14rem)] cursor-pointer sm:max-w-none"
+        >
           {user.image ? (
             <Image
               src={user.image}
               alt={user.name}
-              width={16}
-              height={16}
-              className="rounded-full object-cover"
+              width={24}
+              height={24}
+              className="rounded-full object-cover h-6 w-6"
             />
           ) : (
             <UserIcon />
           )}
-          <span className="min-w-0 max-w-[9rem] truncate sm:max-w-48">{user.name}</span>
+          <span className="min-w-0 max-w-[9rem] truncate sm:max-w-48">
+            {user.name}
+          </span>
         </Button>
       </DropdownMenuTrigger>
 

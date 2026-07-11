@@ -6,6 +6,7 @@ import { ProfileInformation } from "@/components/shared/dashboard/profile-inform
 
 export const metadata: Metadata = {
   title: "Dashboard",
+  description: "Your dashboard",
 };
 
 export default async function DashboardPage() {

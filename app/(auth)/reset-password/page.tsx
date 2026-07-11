@@ -3,6 +3,7 @@ import { ResetPasswordForm } from "@/components/shared/auth/reset-password-form"
 
 export const metadata: Metadata = {
   title: "Reset password",
+  description: "Reset your password",
 };
 
 interface ResetPasswordPageProps {
@@ -29,7 +30,10 @@ export default async function ResetPasswordPage({
           <ResetPasswordForm token={token} />
         </div>
       ) : (
-        <div role="alert" className="text-destructive max-w-md text-center text-sm sm:text-base">
+        <div
+          role="alert"
+          className="text-destructive max-w-md text-center text-sm sm:text-base"
+        >
           Token is missing.
         </div>
       )}

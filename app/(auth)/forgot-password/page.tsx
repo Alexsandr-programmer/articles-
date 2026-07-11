@@ -3,6 +3,7 @@ import { ForgotPasswordForm } from "@/components/shared/auth/forgot-password-for
 
 export const metadata: Metadata = {
   title: "Forgot password",
+  description: "Forgot password page",
 };
 
 export default function ForgotPasswordPage() {

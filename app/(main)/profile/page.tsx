@@ -8,6 +8,7 @@ import { ProfileDetailsForm } from "@/components/shared/profiIe/profile-details-
 
 export const metadata: Metadata = {
   title: "Profile",
+  description: "Update your account details, email, and password",
 };
 
 export default async function ProfilePage() {

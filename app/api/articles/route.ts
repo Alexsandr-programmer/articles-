@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
+import { revalidateTag } from "next/cache";
 
 export async function POST(req: Request) {
   try {
@@ -31,6 +32,8 @@ export async function POST(req: Request) {
         authorId: session.user.id,
       },
     });
+
+    revalidateTag("articles", "max");
 
     return NextResponse.json(article, { status: 201 });
   } catch (error) {

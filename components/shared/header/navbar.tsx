@@ -58,7 +58,7 @@ export async function Navbar() {
               </div>
             }
           >
-            <AuthNavbar></AuthNavbar>
+            <AuthNavbar />
           </Suspense>
           <ModeToggle />
         </div>
