@@ -2,6 +2,7 @@ import { getServerSession } from "@/lib/auth/get-session";
 import UpdateArticleForm from "@/components/shared/article/update-article-form";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export async function generateMetadata({
   params,
@@ -39,7 +40,9 @@ export default async function EditArticlePage({
   return (
     <div className="w-full min-w-0 space-y-6">
       <h1 className="text-2xl font-semibold sm:text-3xl">Edit Article</h1>
-      <UpdateArticleForm article={article} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <UpdateArticleForm article={article} />
+      </Suspense>
     </div>
   );
 }

@@ -9,22 +9,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { Article } from "@/prisma/generated/client";
 import prisma from "@/lib/prisma";
+import { getInitials, getReadingTime } from "@/lib/utils/utils";
+import { notFound } from "next/navigation";
 
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
-}
+export default async function ArticleView({
+  articleId,
+}: {
+  articleId: string;
+}) {
+  const article = await prisma.article.findUnique({
+    where: { id: articleId },
+  });
 
-function getReadingTime(content: string) {
-  const words = content.trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.ceil(words / 200));
-}
+  if (!article) {
+    notFound();
+  }
 
-export default async function ArticleView({ article }: { article: Article }) {
   const readingTime = getReadingTime(article.content);
   const wasUpdated =
     article.updatedAt.getTime() - article.createdAt.getTime() > 60_000;
@@ -32,9 +32,6 @@ export default async function ArticleView({ article }: { article: Article }) {
   const author = await prisma.user.findUnique({
     where: { id: article.authorId },
   });
-
-  // const session = await getServerSession();
-  // const user = session?.user;
 
   return (
     <div className="w-full space-y-8">

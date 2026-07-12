@@ -6,32 +6,7 @@ import { getArticles } from "@/lib/article/get-articles";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Articles() {
-  return (
-    <Suspense fallback={<ArticlesListSkeleton />}>
-      <ArticlesList />
-    </Suspense>
-  );
-}
-
-function ArticlesListSkeleton() {
-  return (
-    <div className="grid grid-cols-3">
-      {Array(8).map((article: Article) => (
-        <div
-          key={article.id}
-          className="border p-4 flex flex-col items-center rounded-2xl"
-        >
-          <div className="h-[200px] w-[300px] bg-gray-500 rounded-2xl"></div>
-          <h1>{article.title}</h1>
-          <p>{article.content}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-async function ArticlesList() {
+export default async function ArticlesList() {
   const articles = await getArticles();
 
   return (

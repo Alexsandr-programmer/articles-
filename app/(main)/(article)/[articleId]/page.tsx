@@ -1,7 +1,10 @@
 import ArticleView from "@/components/shared/article/article-view";
+import { Avatar } from "@/components/ui/avatar";
 import prisma from "@/lib/prisma";
+import { Badge, Clock } from "lucide-react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export async function generateMetadata({
   params,
@@ -42,21 +45,50 @@ export default async function ArticlePage({
   params: Promise<{ articleId: string }>;
 }) {
   const { articleId } = await params;
-  const article = await prisma.article.findUnique({
-    where: { id: articleId },
-    include: {
-      author: {
-        select: {
-          name: true,
-          image: true,
-        },
-      },
-    },
-  });
 
-  if (!article) {
-    notFound();
-  }
+  return (
+    <Suspense fallback={<ArticleViewSkeleton />}>
+      <ArticleView articleId={articleId} />
+    </Suspense>
+  );
+}
 
-  return <ArticleView article={article} />;
+function ArticleViewSkeleton() {
+  return (
+    <article className="mx-auto w-full max-w-3xl space-y-8 relative">
+      <header className="space-y-5">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="h-8 w-24 bg-gray-500 animate-pulse" />
+        </div>
+
+        <h1 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-tight">
+          <div className="h-10 w-full bg-gray-500 animate-pulse" />
+        </h1>
+
+        <div className="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+          <div className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-full bg-gray-500 animate-pulse" />
+            <div className="h-4 w-24 bg-gray-500 animate-pulse" />
+          </div>
+        </div>
+      </header>
+
+      <div className="relative aspect-video overflow-hidden rounded-2xl ring-1 ring-foreground/10">
+        <div className="size-full bg-gray-500 animate-pulse" />
+      </div>
+
+      <div className="space-y-6">
+        <div className="text-foreground/90 space-y-4 text-base leading-8 whitespace-pre-wrap sm:text-lg sm:leading-8">
+          <div className="h-4 w-full bg-gray-500 animate-pulse" />
+          <div className="h-4 w-full bg-gray-400 animate-pulse" />
+          <div className="h-4 w-full bg-gray-500 animate-pulse" />
+          <div className="h-4 w-full bg-gray-500 animate-pulse" />
+          <div className="h-4 w-full bg-gray-500 animate-pulse" />
+          <div className="h-4 w-full bg-gray-500 animate-pulse" />
+        </div>
+
+        <p className="text-muted-foreground border-t pt-4 text-xs animate-pulse"></p>
+      </div>
+    </article>
+  );
 }
