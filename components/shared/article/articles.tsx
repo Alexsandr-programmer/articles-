@@ -1,8 +1,10 @@
-import { Article } from "@/prisma/generated/client";
+import type { Article } from "@/prisma/generated/client";
 import { Suspense } from "react";
 import DeleteButton from "./delete-button";
 import { getServerSession } from "@/lib/auth/get-session";
 import { getArticles } from "@/lib/article/get-articles";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Articles() {
   return (
@@ -35,17 +37,28 @@ async function ArticlesList() {
   const session = await getServerSession();
   const user = session?.user;
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {articles.reverse().map((article: Article) => (
         <div
           key={article.id}
-          className="border p-4 flex flex-col items-center rounded-2xl"
+          className="border p-4 flex flex-col items-center rounded-2xl gap-2"
         >
-          <div className="h-[200px] w-[300px] bg-gray-500 rounded-2xl"></div>
+          <Image
+            src={article.imageUrl || "/image.png"}
+            alt="Article image"
+            width={300}
+            height={200}
+            className="rounded-2xl"
+          />
           <h1>{article.title}</h1>
           <p>{article.content}</p>
 
-          {user?.role === "admin" && <DeleteButton articleId={article.id} />}
+          <div className="flex gap-2">
+            {user?.role === "admin" && <DeleteButton articleId={article.id} />}
+            {user?.id === article.authorId && (
+              <Link href={`/${article.id}`}>Update</Link>
+            )}
+          </div>
         </div>
       ))}
     </div>

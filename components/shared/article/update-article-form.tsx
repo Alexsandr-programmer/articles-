@@ -1,10 +1,13 @@
 "use client";
 
-import { articleScheme } from "@/lib/article/article-scheme";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { createArticleAction } from "@/app/actions";
+import { updateArticleAction } from "@/app/actions";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import {
   Form,
   FormField,
@@ -13,50 +16,33 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-import { LoadingButton } from "../loading-button";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { LoadingButton } from "@/components/shared/loading-button";
+import { articleScheme } from "@/lib/article/article-scheme";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Article } from "@/prisma/generated/client";
+import { redirect } from "next/navigation";
 
 type ArticleValues = z.infer<typeof articleScheme>;
 
-export default function ArticleForm() {
-  const router = useRouter();
-
+export default function UpdateArticleForm({
+  article,
+}: {
+  article: Article & { id: string };
+}) {
   const form = useForm<ArticleValues>({
     resolver: zodResolver(articleScheme),
     defaultValues: {
-      title: "",
-      content: "",
-      imageUrl: "",
+      title: article.title,
+      content: article.content,
+      imageUrl: article.imageUrl || "",
     },
   });
 
   const handleSubmit = async (data: ArticleValues) => {
-    // const response = await fetch("/api/articles", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(data),
-    // });
-
-    // if (!response.ok) {
-    //   toast.error("article was't created ");
-    // } else {
-    //   toast.success("aritcle was created");
-    //   router.push("/");
-    // }
-
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("content", data.content);
@@ -65,15 +51,9 @@ export default function ArticleForm() {
       data.imageUrl ||
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsHGRNvgv9VxDsMyNrNfz74oqHhPzheNW_20pcVfbS0Q&s=10",
     );
-
-    const result = await createArticleAction(formData);
-
-    if (!result.success) {
-      toast.error(result.message || "Article wasn't created");
-    } else {
-      toast.success("Article was created");
-      router.push("/");
-    }
+    formData.append("articleId", article.id);
+    await updateArticleAction(formData);
+    redirect("/");
   };
 
   return (
@@ -158,7 +138,7 @@ export default function ArticleForm() {
               className="h-11 w-full touch-manipulation sm:h-9"
               loading={form.formState.isSubmitting}
             >
-              Create an article
+              Update an article
             </LoadingButton>
           </form>
         </Form>

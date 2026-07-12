@@ -8,6 +8,7 @@ import prisma from "@/lib/prisma";
 export async function createArticleAction(formData: FormData) {
   const title = formData.get("title")?.toString();
   const content = formData.get("content")?.toString();
+  const imageUrl = formData.get("imageUrl")?.toString();
 
   try {
     const session = await auth.api.getSession({
@@ -27,6 +28,7 @@ export async function createArticleAction(formData: FormData) {
         title,
         content,
         authorId: session.user.id,
+        imageUrl,
       },
     });
 
@@ -68,6 +70,33 @@ export async function deleteArticleAction(articleId: string) {
     };
   } catch (error) {
     console.error("Ошибка при удалении статьи:", error);
+    return { success: false, message: "Internal server error" };
+  }
+}
+
+export async function updateArticleAction(formData: FormData) {
+  const title = formData.get("title")?.toString();
+  const content = formData.get("content")?.toString();
+  const imageUrl = formData.get("imageUrl")?.toString();
+  const articleId = formData.get("articleId")?.toString();
+
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return { success: false, message: "Unauthorized" };
+    }
+
+    await prisma.article.update({
+      where: { id: articleId, authorId: session.user.id },
+      data: { title, content, imageUrl },
+    });
+
+    updateTag("articles");
+  } catch (error) {
+    console.error("Ошибка при обновлении статьи:", error);
     return { success: false, message: "Internal server error" };
   }
 }

@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         hostname: "*.githubusercontent.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "media.2x2tv.ru",
+        pathname: "/**",
+      },
     ],
   },
 };
