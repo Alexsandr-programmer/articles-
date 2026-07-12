@@ -1,20 +1,14 @@
+import Dashboard from "@/components/shared/dashboard/dashboard";
+import { DashboardSkeleton } from "@/components/shared/dashboard/dashboard-skeleton";
 import type { Metadata } from "next";
-import { redirect, unauthorized } from "next/navigation";
-import { getServerSession } from "@/lib/auth/get-session";
-import EmailVerificationAlert from "../../../components/shared/dashboard/email-verification-alert";
-import { ProfileInformation } from "@/components/shared/dashboard/profile-information";
-import Articles from "@/components/shared/dashboard/articles";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Your dashboard",
 };
 
-export default async function DashboardPage() {
-  const session = await getServerSession();
-  const user = session?.user;
-  if (!user) redirect("/unauthorized");
-
+export default function DashboardPage() {
   return (
     <div className="w-full space-y-6">
       <div className="space-y-2">
@@ -25,11 +19,9 @@ export default async function DashboardPage() {
           Welcome back! Here&apos;s your account overview.
         </p>
       </div>
-      {!user.emailVerified && user.email && (
-        <EmailVerificationAlert email={user.email} />
-      )}
-      <ProfileInformation user={user} />
-      <Articles authorId={user.id as string} />
+      <Suspense fallback={<DashboardSkeleton />}>
+        <Dashboard />
+      </Suspense>
     </div>
   );
 }
