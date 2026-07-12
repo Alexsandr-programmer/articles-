@@ -2,6 +2,19 @@ import { getServerSession } from "@/lib/auth/get-session";
 import UpdateArticleForm from "@/components/shared/article/update-article-form";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ articleId: string }>;
+}) {
+  const { articleId } = await params;
+  const article = await prisma.article.findUnique({
+    where: { id: articleId },
+  });
+  return { title: article?.title };
+}
+
 export default async function EditArticlePage({
   params,
 }: {
