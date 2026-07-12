@@ -15,6 +15,13 @@ export async function generateMetadata({
   return { title: article?.title };
 }
 
+export async function generateStaticParams() {
+  const articles = await prisma.article.findMany({
+    select: { id: true },
+  });
+  return articles.map((article) => ({ articleId: article.id }));
+}
+
 export default async function EditArticlePage({
   params,
 }: {
