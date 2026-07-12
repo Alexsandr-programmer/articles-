@@ -1,8 +1,35 @@
-import UpdateArticleForm from "@/components/shared/article/update-article-form";
+import ArticleView from "@/components/shared/article/article-view";
 import prisma from "@/lib/prisma";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ articleId: string }>;
+}): Promise<Metadata> {
+  const { articleId } = await params;
+  const article = await prisma.article.findUnique({
+    where: { id: articleId },
+    select: { title: true, content: true },
+  });
+
+  if (!article) {
+    return { title: "Article not found" };
+  }
+
+  const description =
+    article.content.length > 160
+      ? `${article.content.slice(0, 157)}...`
+      : article.content;
+
+  return {
+    title: article.title,
+    description,
+  };
+}
+
+export default async function ArticlePage({
   params,
 }: {
   params: Promise<{ articleId: string }>;
@@ -10,34 +37,19 @@ export async function generateMetadata({
   const { articleId } = await params;
   const article = await prisma.article.findUnique({
     where: { id: articleId },
+    include: {
+      author: {
+        select: {
+          name: true,
+          image: true,
+        },
+      },
+    },
   });
-  if (!article) {
-    return notFound();
-  }
-  return {
-    title: `Update ${article.title}`,
-    description: `Update ${article.title}`,
-  };
-}
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: { articleId: string };
-}) {
-  const { articleId } = await params;
-  const article = await prisma.article.findUnique({
-    where: { id: articleId },
-  });
   if (!article) {
-    return notFound();
+    notFound();
   }
 
-  return (
-    <div className="flex flex-col gap-4 items-center justify-center p-4">
-      <h1 className="text-2xl font-bold">{article.title}</h1>
-
-      <UpdateArticleForm article={article} />
-    </div>
-  );
+  return <ArticleView article={article} />;
 }

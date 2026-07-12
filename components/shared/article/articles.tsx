@@ -34,31 +34,36 @@ function ArticlesListSkeleton() {
 async function ArticlesList() {
   const articles = await getArticles();
 
-  const session = await getServerSession();
-  const user = session?.user;
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {articles.reverse().map((article: Article) => (
         <div
           key={article.id}
-          className="border p-4 flex flex-col items-center rounded-2xl gap-2"
+          className="flex flex-col items-center rounded-2xl gap-2 bg-secondary relative hover:text-primary transition-all duration-300"
         >
-          <Image
-            src={article.imageUrl || "/image.png"}
-            alt="Article image"
-            width={300}
-            height={200}
-            className="rounded-2xl"
-          />
-          <h1>{article.title}</h1>
-          <p>{article.content}</p>
+          <Link href={`/${article.id}`} className="flex flex-col items-center ">
+            <Image
+              src={article.imageUrl || "/image.png"}
+              alt="Article image"
+              width={300}
+              height={200}
+              className="rounded-2xl w-full  object-cover hover:brightness-90 transition-all duration-300"
+            />
+            <div className="flex flex-col gap-2 items-center p-4">
+              <h1 className="text-lg font-bold">{article.title}</h1>
+              <p className="text-sm text-gray-500">
+                {article.content.slice(0, 100)}...
+              </p>
 
-          <div className="flex gap-2">
-            {user?.role === "admin" && <DeleteButton articleId={article.id} />}
-            {user?.id === article.authorId && (
-              <Link href={`/${article.id}`}>Update</Link>
-            )}
-          </div>
+              <p className="text-sm text-gray-500">
+                {article.createdAt.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+            </div>
+          </Link>
         </div>
       ))}
     </div>

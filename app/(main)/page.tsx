@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 export default async function Home() {
   return (
-    <div className="w-full space-y-6">
+    <main className="w-full space-y-6">
       <div className="space-y-2">
         <h1 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
           Welcome to the platform
@@ -14,7 +14,12 @@ export default async function Home() {
         </p>
       </div>
 
-      <Articles />
-    </div>
+      <section className="space-y-6 bg-primary p-4 rounded-lg">
+        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          Articles
+        </h2>
+        <Articles />
+      </section>
+    </main>
   );
 }
