@@ -53,7 +53,7 @@ export default function UpdateArticleForm({
     );
     formData.append("articleId", article.id);
     await updateArticleAction(formData);
-    redirect("/");
+    redirect(`/${article.id}`);
   };
 
   return (

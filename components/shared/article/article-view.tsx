@@ -117,13 +117,6 @@ export default async function ArticleView({ article }: { article: Article }) {
           )}
         </div>
       </article>
-      {/* 
-      <div className="flex gap-2 justify-between w-full p-4 absolute top-0 right-0">
-        {user?.id === article.author.id && (
-          <Link href={`/${article.id}`}>Update</Link>
-        )}
-        {user?.role === "admin" && <DeleteButton articleId={article.id} />}
-      </div> */}
     </div>
   );
 }

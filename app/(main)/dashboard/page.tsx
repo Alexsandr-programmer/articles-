@@ -3,6 +3,7 @@ import { redirect, unauthorized } from "next/navigation";
 import { getServerSession } from "@/lib/auth/get-session";
 import EmailVerificationAlert from "../../../components/shared/dashboard/email-verification-alert";
 import { ProfileInformation } from "@/components/shared/dashboard/profile-information";
+import Articles from "@/components/shared/dashboard/articles";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -28,6 +29,7 @@ export default async function DashboardPage() {
         <EmailVerificationAlert email={user.email} />
       )}
       <ProfileInformation user={user} />
+      <Articles authorId={user.id as string} />
     </div>
   );
 }
