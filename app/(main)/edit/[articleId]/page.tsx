@@ -1,3 +1,4 @@
+import { ArticleEditorLoader } from "@/components/shared/article/article-editor-loader";
 import UpdateArticleForm from "@/components/shared/article/update-article-form";
 import UpdateArticleFormSkeleton from "@/components/shared/article/update-form-skeleton";
 import { getArticle } from "@/lib/article/get-article";
@@ -42,9 +43,6 @@ export default async function EditArticlePage({
 }) {
   const { articleId } = await params;
   const user = await requireUser();
-  // const article = await prisma.article.findUnique({
-  //   where: { id: articleId },
-  // });
   const article = await getArticle(articleId);
   if (!article) {
     notFound();
@@ -55,7 +53,7 @@ export default async function EditArticlePage({
     <div className="w-full min-w-0 space-y-6">
       <h1 className="text-2xl font-semibold sm:text-3xl">Edit Article</h1>
       <Suspense fallback={<UpdateArticleFormSkeleton />}>
-        <UpdateArticleForm article={article} />
+        <ArticleEditorLoader articleId={articleId} userId={user.id} />
       </Suspense>
     </div>
   );

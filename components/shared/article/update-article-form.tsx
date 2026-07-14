@@ -24,7 +24,6 @@ import { articleScheme } from "@/lib/article/article-scheme";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Article } from "@/prisma/generated/client";
-import { redirect } from "next/navigation";
 
 type ArticleValues = z.infer<typeof articleScheme>;
 
@@ -53,7 +52,6 @@ export default function UpdateArticleForm({
     );
     formData.append("articleId", article.id);
     await updateArticleAction(formData);
-    redirect(`/${article.id}`);
   };
 
   return (

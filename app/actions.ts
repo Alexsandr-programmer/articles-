@@ -3,6 +3,7 @@
 import { requireUserForAction } from "@/lib/auth/dal";
 import { updateTag } from "next/cache";
 import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export async function createArticleAction(formData: FormData) {
   const title = formData.get("title")?.toString();
@@ -85,6 +86,7 @@ export async function updateArticleAction(formData: FormData) {
     });
 
     updateTag("articles");
+    redirect(`/${articleId}`);
   } catch (error) {
     console.error("Ошибка при обновлении статьи:", error);
     return { success: false, message: "Internal server error" };
