@@ -2,7 +2,7 @@ import UpdateArticleForm from "@/components/shared/article/update-article-form";
 import UpdateArticleFormSkeleton from "@/components/shared/article/update-form-skeleton";
 import { getArticle } from "@/lib/article/get-article";
 import { requireUser } from "@/lib/auth/dal";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 
 // TODO check about my structure for this page
@@ -47,10 +47,7 @@ export default async function EditArticlePage({
   // });
   const article = await getArticle(articleId);
   if (!article) {
-    return {
-      title: "Article not found",
-      description: "This article does not exist.",
-    };
+    notFound();
   }
   if (article.authorId !== user.id) redirect("/forbidden");
 
