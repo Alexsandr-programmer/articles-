@@ -1,6 +1,7 @@
 import ArticleView from "@/components/shared/article/article-view";
 // import { Avatar } from "@/components/ui/avatar";
 import { getArticle } from "@/lib/article/get-article";
+import { getArticles } from "@/lib/article/get-articles";
 import prisma from "@/lib/prisma";
 // import { Badge, Clock } from "lucide-react";
 import { Metadata } from "next";
@@ -43,9 +44,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const articles = await prisma.article.findMany({
-    select: { id: true },
-  });
+  const articles = await getArticles();
   return articles.map((article) => ({ articleId: article.id }));
 }
 
