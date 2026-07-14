@@ -47,6 +47,13 @@ export function DashboardSkeleton() {
           </div>
         </CardContent>
       </Card>
+
+      <h2 className="text-lg font-semibold">Your articles</h2>
+      <div className="space-y-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <Skeleton className="h-40 w-full" />
+        <Skeleton className="h-40 w-full" />
+        <Skeleton className="h-40 w-full" />
+      </div>
     </div>
   );
 }

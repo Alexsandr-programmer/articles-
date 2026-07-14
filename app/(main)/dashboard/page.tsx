@@ -2,6 +2,7 @@ import Dashboard from "@/components/shared/dashboard/dashboard";
 import { DashboardSkeleton } from "@/components/shared/dashboard/dashboard-skeleton";
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Articles from "@/components/shared/dashboard/articles";
 
 export const metadata: Metadata = {
   title: "Dashboard",

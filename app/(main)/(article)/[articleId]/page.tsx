@@ -1,10 +1,11 @@
 import ArticleView from "@/components/shared/article/article-view";
-import { Avatar } from "@/components/ui/avatar";
+// import { Avatar } from "@/components/ui/avatar";
+import { getArticle } from "@/lib/article/get-article";
 import prisma from "@/lib/prisma";
-import { Badge, Clock } from "lucide-react";
+// import { Badge, Clock } from "lucide-react";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
+// import { notFound } from "next/navigation";
+// import { Suspense } from "react";
 
 export async function generateMetadata({
   params,
@@ -12,13 +13,22 @@ export async function generateMetadata({
   params: Promise<{ articleId: string }>;
 }): Promise<Metadata> {
   const { articleId } = await params;
-  const article = await prisma.article.findUnique({
-    where: { id: articleId },
-    select: { title: true, content: true },
-  });
+  // const article = await prisma.article.findUnique({
+  //   where: { id: articleId },
+  //   select: { title: true, content: true },
+  // });
+
+  // if (!article) {
+  //   return { title: "Article not found" };
+  // }
+
+  const article = await getArticle(articleId);
 
   if (!article) {
-    return { title: "Article not found" };
+    return {
+      title: "Article not found",
+      description: "This article does not exist.",
+    };
   }
 
   const description =
@@ -47,9 +57,9 @@ export default async function ArticlePage({
   const { articleId } = await params;
 
   return (
-    <Suspense fallback={<ArticleViewSkeleton />}>
-      <ArticleView articleId={articleId} />
-    </Suspense>
+    // <Suspense fallback={<ArticleViewSkeleton />}>
+    <ArticleView articleId={articleId} />
+    // </Suspense>
   );
 }
 

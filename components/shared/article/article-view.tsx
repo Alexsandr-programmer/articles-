@@ -7,31 +7,22 @@ import { format } from "date-fns";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Article } from "@/prisma/generated/client";
 import prisma from "@/lib/prisma";
 import { getInitials, getReadingTime } from "@/lib/utils/utils";
-import { notFound } from "next/navigation";
+import { getArticle } from "@/lib/article/get-article";
 
 export default async function ArticleView({
   articleId,
 }: {
   articleId: string;
 }) {
-  const article = await prisma.article.findUnique({
-    where: { id: articleId },
-  });
-
-  if (!article) {
-    notFound();
-  }
+  const article = await getArticle(articleId);
 
   const readingTime = getReadingTime(article.content);
   const wasUpdated =
     article.updatedAt.getTime() - article.createdAt.getTime() > 60_000;
 
-  const author = await prisma.user.findUnique({
-    where: { id: article.authorId },
-  });
+  const author = article.author;
 
   return (
     <div className="w-full space-y-8">
