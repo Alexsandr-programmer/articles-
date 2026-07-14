@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { getServerSession } from "@/lib/auth/get-session";
+import { requireUser } from "@/lib/auth/dal";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -10,9 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function EmailVerifiedPage() {
-  const session = await getServerSession();
-  const user = session?.user;
-  if (!user) redirect("/unauthorized");
+  await requireUser();
 
   return (
     <div className="flex min-h-[min(70vh,32rem)] w-full flex-1 flex-col items-center justify-center px-2 py-8 text-center sm:min-h-[50vh] sm:px-4">

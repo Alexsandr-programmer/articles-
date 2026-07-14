@@ -5,14 +5,7 @@ import { PasswordInput } from "@/components/shared/password-input";
 import { GitHubIcon } from "@/components/icons/Github";
 import { GoogleIcon } from "@/components/icons/Google";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -76,126 +69,102 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
-        <CardDescription className="text-xs md:text-sm">
-          Enter your email below to login to your account
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="your@email.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="your@email.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center">
-                    <FormLabel>Password</FormLabel>
-                    <Link
-                      href="/forgot-password"
-                      className="ml-auto inline-block text-sm underline"
-                    >
-                      Forgot your password?
-                    </Link>
-                  </div>
-                  <FormControl>
-                    <PasswordInput
-                      autoComplete="current-password"
-                      placeholder="Password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="rememberMe"
-              render={({ field }) => (
-                <FormItem className="flex items-center gap-2">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel>Remember me</FormLabel>
-                </FormItem>
-              )}
-            />
-
-            {form.formState.errors.root?.serverError && (
-              <div role="alert" className="text-sm text-red-600">
-                {form.formState.errors.root?.serverError.message}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center">
+                <FormLabel>Password</FormLabel>
+                <Link
+                  href="/forgot-password"
+                  className="ml-auto inline-block text-sm underline"
+                >
+                  Forgot your password?
+                </Link>
               </div>
-            )}
+              <FormControl>
+                <PasswordInput
+                  autoComplete="current-password"
+                  placeholder="Password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <LoadingButton
-              type="submit"
-              className="w-full"
-              loading={form.formState.isSubmitting}
-            >
-              Login
-            </LoadingButton>
+        <FormField
+          control={form.control}
+          name="rememberMe"
+          render={({ field }) => (
+            <FormItem className="flex items-center gap-2">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormLabel>Remember me</FormLabel>
+            </FormItem>
+          )}
+        />
 
-            <div className="flex w-full flex-col items-center justify-between gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full gap-2 cursor-pointer"
-                disabled={form.formState.isSubmitting}
-                onClick={() => handleSocialSignIn("google")}
-              >
-                <GoogleIcon width="0.98em" height="1em" />
-                Sign in with Google
-              </Button>
+        {form.formState.errors.root?.serverError && (
+          <div role="alert" className="text-sm text-red-600">
+            {form.formState.errors.root?.serverError.message}
+          </div>
+        )}
 
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full gap-2 cursor-pointer"
-                disabled={form.formState.isSubmitting}
-                onClick={() => handleSocialSignIn("github")}
-              >
-                <GitHubIcon />
-                Sign in with Github
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter>
-        <div className="flex w-full justify-center border-t pt-4">
-          <p className="text-muted-foreground text-center text-xs">
-            Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="underline">
-              Sign up
-            </Link>
-          </p>
+        <LoadingButton
+          type="submit"
+          className="w-full"
+          loading={form.formState.isSubmitting}
+        >
+          Login
+        </LoadingButton>
+
+        <div className="flex w-full flex-col items-center justify-between gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full gap-2 cursor-pointer"
+            disabled={form.formState.isSubmitting}
+            onClick={() => handleSocialSignIn("google")}
+          >
+            <GoogleIcon width="0.98em" height="1em" />
+            Sign in with Google
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full gap-2 cursor-pointer"
+            disabled={form.formState.isSubmitting}
+            onClick={() => handleSocialSignIn("github")}
+          >
+            <GitHubIcon />
+            Sign in with Github
+          </Button>
         </div>
-      </CardFooter>
-    </Card>
+      </form>
+    </Form>
   );
 }

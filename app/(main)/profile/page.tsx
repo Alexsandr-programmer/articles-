@@ -3,9 +3,8 @@ import { LogoutEverywhereButton } from "@/components/shared/profiIe/logout-every
 import { PasswordForm } from "@/components/shared/profiIe/password-form";
 import { ProfileDetailsForm } from "@/components/shared/profiIe/profile-details-form";
 import { ProfileSkeleton } from "@/components/shared/profiIe/profile-skeleton";
-import { getServerSession } from "@/lib/auth/get-session";
+import { requireUser } from "@/lib/auth/dal";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -32,10 +31,7 @@ export default function ProfilePage() {
 }
 
 async function ProfileContent() {
-  const session = await getServerSession();
-  const user = session?.user;
-
-  if (!user) return redirect("/unauthorized");
+  const user = await requireUser();
 
   return (
     <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:gap-8">

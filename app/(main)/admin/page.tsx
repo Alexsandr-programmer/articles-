@@ -3,21 +3,16 @@ import {
   type AdminUserRow,
 } from "@/components/shared/admin/admin-users-table";
 import { auth } from "@/lib/auth/auth";
-import { getServerSession } from "@/lib/auth/get-session";
+import { requireAdmin } from "@/lib/auth/dal";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Admin",
 };
 
 export default async function AdminPage() {
-  const session = await getServerSession();
-  const user = session?.user;
-
-  if (!user) redirect("/unauthorized");
-  if (user.role !== "admin") redirect("/forbidden");
+  const user = await requireAdmin();
 
   let users: AdminUserRow[] = [];
   let loadError: string | null = null;

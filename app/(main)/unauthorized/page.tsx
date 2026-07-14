@@ -1,15 +1,12 @@
-import { getServerSession } from "@/lib/auth/get-session";
+import { redirectIfAuthenticated } from "@/lib/auth/dal";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Unauthorized",
 };
 
 export default async function UnauthorizedPage() {
-  const session = await getServerSession();
-  const user = session?.user;
-  if (user) redirect("/dashboard");
+  await redirectIfAuthenticated();
 
   return (
     <div className="flex min-h-[min(60vh,28rem)] w-full grow flex-col items-center justify-center px-3 py-10 text-center sm:px-4">

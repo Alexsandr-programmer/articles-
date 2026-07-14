@@ -1,8 +1,7 @@
 import ArticleForm from "@/components/shared/article/article-from";
 import { CreateArticleSkeleton } from "@/components/shared/article/create-article-skeleton";
-import { getServerSession } from "@/lib/auth/get-session";
+import { requireUser } from "@/lib/auth/dal";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -29,10 +28,6 @@ export default function CreateBlogPage() {
 }
 
 async function CreateArticleContent() {
-  const session = await getServerSession();
-  const user = session?.user;
-
-  if (!user) redirect("/login");
-
+  await requireUser();
   return <ArticleForm />;
 }

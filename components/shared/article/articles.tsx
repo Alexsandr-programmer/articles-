@@ -1,7 +1,4 @@
 import type { Article } from "@/prisma/generated/client";
-import { Suspense } from "react";
-import DeleteButton from "./delete-button";
-import { getServerSession } from "@/lib/auth/get-session";
 import { getArticles } from "@/lib/article/get-articles";
 import Image from "next/image";
 import Link from "next/link";

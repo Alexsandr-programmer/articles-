@@ -1,12 +1,9 @@
-import { redirect, unauthorized } from "next/navigation";
-import { getServerSession } from "@/lib/auth/get-session";
-import EmailVerificationAlert from "../../../components/shared/dashboard/email-verification-alert";
+import EmailVerificationAlert from "@/components/shared/dashboard/email-verification-alert";
 import { ProfileInformation } from "@/components/shared/dashboard/profile-information";
+import { requireUser } from "@/lib/auth/dal";
 
 export default async function Dashboard() {
-  const session = await getServerSession();
-  const user = session?.user;
-  if (!user) redirect("/unauthorized");
+  const user = await requireUser();
 
   return (
     <>

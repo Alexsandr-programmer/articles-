@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { getServerSession } from "@/lib/auth/get-session";
+import { requireUser } from "@/lib/auth/dal";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -9,9 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ForbiddenPage() {
-  const session = await getServerSession();
-  const user = session?.user;
-  if (!user) redirect("/unauthorized");
+  await requireUser("/unauthorized");
 
   return (
     <div className="flex min-h-[min(60vh,28rem)] w-full grow flex-col items-center justify-center px-3 py-10 text-center sm:px-4">

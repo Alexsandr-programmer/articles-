@@ -1,21 +1,16 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { auth } from "@/lib/auth/auth";
-import { headers } from "next/headers";
+import { requireUserForAction } from "@/lib/auth/dal";
 import { revalidateTag } from "next/cache";
 
 export async function POST(req: Request) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-
-    if (!session) {
+    const { user, error } = await requireUserForAction();
+    if (error || !user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
-
     const { title, content } = body;
 
     if (!title || !content) {
@@ -29,7 +24,7 @@ export async function POST(req: Request) {
       data: {
         title,
         content,
-        authorId: session.user.id,
+        authorId: user.id,
       },
     });
 

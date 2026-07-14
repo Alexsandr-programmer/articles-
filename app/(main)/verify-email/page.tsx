@@ -1,16 +1,13 @@
 import ResendVerificationButton from "@/components/shared/auth/resend-verification-btn";
-import { getServerSession } from "@/lib/auth/get-session";
+import { requireUser } from "@/lib/auth/dal";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Verify Email",
 };
 
 export default async function VerifyEmailPage() {
-  const session = await getServerSession();
-  const user = session?.user;
-  if (!user) redirect("/unauthorized");
+  const user = await requireUser();
 
   return (
     <div className="flex min-h-[min(70vh,32rem)] w-full flex-1 flex-col items-center justify-center px-2 py-8 text-center sm:min-h-[50vh] sm:px-4">

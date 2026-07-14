@@ -1,8 +1,7 @@
 "use server";
 
-import { auth } from "@/lib/auth/auth";
-import { headers } from "next/headers";
-import { revalidateTag, updateTag } from "next/cache";
+import { requireUserForAction } from "@/lib/auth/dal";
+import { updateTag } from "next/cache";
 import prisma from "@/lib/prisma";
 
 export async function createArticleAction(formData: FormData) {
@@ -11,12 +10,9 @@ export async function createArticleAction(formData: FormData) {
   const imageUrl = formData.get("imageUrl")?.toString();
 
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-
-    if (!session?.user) {
-      return { success: false, message: "Unauthorized" };
+    const { user, error } = await requireUserForAction();
+    if (error || !user) {
+      return { success: false, message: error ?? "Unauthorized" };
     }
 
     if (!title || !content) {
@@ -27,7 +23,7 @@ export async function createArticleAction(formData: FormData) {
       data: {
         title,
         content,
-        authorId: session.user.id,
+        authorId: user.id,
         imageUrl,
       },
     });
@@ -47,18 +43,15 @@ export async function createArticleAction(formData: FormData) {
 
 export async function deleteArticleAction(articleId: string) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-
-    if (!session?.user) {
-      return { success: false, message: "Unauthorized" };
+    const { user, error } = await requireUserForAction();
+    if (error || !user) {
+      return { success: false, message: error ?? "Unauthorized" };
     }
 
     await prisma.article.delete({
       where: {
         id: articleId,
-        authorId: session.user.id,
+        authorId: user.id,
       },
     });
 
@@ -81,16 +74,13 @@ export async function updateArticleAction(formData: FormData) {
   const articleId = formData.get("articleId")?.toString();
 
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-
-    if (!session?.user) {
-      return { success: false, message: "Unauthorized" };
+    const { user, error } = await requireUserForAction();
+    if (error || !user) {
+      return { success: false, message: error ?? "Unauthorized" };
     }
 
     await prisma.article.update({
-      where: { id: articleId, authorId: session.user.id },
+      where: { id: articleId, authorId: user.id },
       data: { title, content, imageUrl },
     });
 

@@ -1,5 +1,4 @@
-import { getServerSession } from "@/lib/auth/get-session";
-import { redirect } from "next/navigation";
+import { redirectIfAuthenticated } from "@/lib/auth/dal";
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 
@@ -8,9 +7,7 @@ export default async function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
-  const user = session?.user;
-  if (user) redirect("/dashboard");
+  await redirectIfAuthenticated();
 
   return (
     <div className="relative min-h-dvh min-w-0">
